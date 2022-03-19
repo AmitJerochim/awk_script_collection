@@ -16,14 +16,14 @@ localhost
 ```
 
 ```
-$cat ports.txt
+$ cat ports.txt
 22
 80
 25
 ```
 
 ```
-$cat protocols.txt
+$ cat protocols.txt
 ssh
 http
 smtp
