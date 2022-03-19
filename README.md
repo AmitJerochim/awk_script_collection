@@ -27,8 +27,9 @@ $cat protocols.txt
 ssh
 http
 smtp
+```
 
-``
+```
 $ awk -f awk_script_collection/tuple_builder.awk hosts.txt ports.txt protocols.txt
 localhost 22 ssh 
 127.0.0.1 80 http 
