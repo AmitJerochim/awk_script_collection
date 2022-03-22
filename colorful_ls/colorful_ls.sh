@@ -1,5 +1,7 @@
 #!/bin/bash
-ls -laF $1 | awk 'BEGIN {
+read -r lenLinks lenSize <<<$(ls -laF $1 | awk 'BEGIN{lenLinks=1; lenSize=1} NR>1{if ( length($2) >lenLinks ) {lenLinks = length($2) }; if (length($5)>lenSize) {lenSize=length($5)}} END{print lenLinks " " lenSize }');
+
+ls -laF $1 | awk -v lenLinks=$lenLinks -v lenSize=$lenSize 'BEGIN {
 black="\033[0;30m";
 red="\033[0;31m";
 green="\033[0;32m";
@@ -28,11 +30,11 @@ NR>1{
 	perms=perms green perm[2] perm[3] perm[4] # prints user permissions
 	perms=perms yellow perm[5] perm[6] perm[7] #prints group permissions		
 	perms=perms light_red perm[8] perm [9] perm[10]
-	w=length($2)
-	S2=sprintf("%4s",w+4, $2);
+	linksSpace=lenLinks-length($2); numLinks=light_grey; for (i=0; i<linksSpace;i++) { numLinks= numLinks " "}; numLinks= numLinks $2
 	user=light_cyan $3
 	group=light_cyan $4
-	size=$5
+	sizeSpace=lenSize-length($5)
+	size=blue; for (i=0; i<=sizeSpace; i++){ size = size " "}; size = size $5;
 	month=light_grey $6
 	split($7, tmp,""); if (length(tmp)==1) { day=light_grey " " $7 } else { day=light_grey $7 }
 	#day=light_grey $7
@@ -43,7 +45,7 @@ NR>1{
 	if (tmp[length(tmp)]=="/"){ linkedTo=light_blue $11 } else if (tmp[length(tmp)]=="|") {linkedTo=orange $11} else if (perm[4]="x") { linkedTo=light_green $11 } else { linkedTo=white $11}
 
 	
-	print perms " " user " " group " " month " " day " " time "  " name " " arrow " " linkedTo
+	print perms " " numLinks " " user " " group " " size " " month " " day " " time "  " name " " arrow " " linkedTo
 
 } 
 '
